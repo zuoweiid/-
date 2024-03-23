@@ -34,22 +34,22 @@ jobs:
 
     - name: 安装编译环境                ## Initialization environment
       run : |
-        git config --global user.email "zuoweiid@users.noreply.github.com"         ## 电子邮件
-        git config --global user.name "actions-user"                              ## 名称
+        git config --global user.email "zuoweiid@users.noreply.github.com"         ## 设置提交电子邮件地址
+        git config --global user.name "actions-user"                               ## 名称
         sudo timedatectl set-timezone "Asia/Shanghai"
         
     - name: 克隆软件包                   ## Clone packages
       run: |
         cd $GITHUB_WORKSPACE              ## 进入工作目录
-        chmod +x .github/diy/${{matrix.target}}.sh      ## 给与diy目录内脚本  可执行的权限
-        git clone -b master https://github.com/kenzok8/openwrt-packages.git ${{matrix.target}}
-        cd ${{matrix.target}}
+        chmod +x .github/diy/${{matrix.target}}.sh      ## 给与workflows目录内脚本  可执行的权限
+        git clone -b master https://github.com/kenzok8/openwrt-packages.git ${{matrix.target}}     ## 克隆到master目录内
+        cd ${{matrix.target}}                                                                      ## 进入master目录内
         git rm -r --cache * >/dev/null 2>&1 &
         rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
-        $GITHUB_WORKSPACE/.github/diy/${{matrix.target}}.sh
-        bash /$GITHUB_WORKSPACE/.github/diy/convert_translation.sh
-        bash /$GITHUB_WORKSPACE/.github/diy/create_acl_for_luci.sh -a
-        bash /$GITHUB_WORKSPACE/.github/diy/Modify.sh
+        $GITHUB_WORKSPACE/.github/diy/${{matrix.target}}.sh                                     ## 执行master.sh
+        bash /$GITHUB_WORKSPACE/.github/diy/convert_translation.sh                      ## 执行convert_translation.sh
+        bash /$GITHUB_WORKSPACE/.github/diy/create_acl_for_luci.sh -a                   ## 执行create_acl_for_luci.sh
+        bash /$GITHUB_WORKSPACE/.github/diy/Modify.sh                                   ## 执行Modify.sh
 
     - name: 上传   ## Upload
       env: 
