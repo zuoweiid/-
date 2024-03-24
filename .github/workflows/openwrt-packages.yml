@@ -20,7 +20,7 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
     runs-on: ubuntu-latest                 ## ubuntu-最新版
 
-    name: Update openwrt-packages   ## 更新 openwrt 软件包
+    name: 更新openwrt-packages             ## 运行工作流的名称 Update openwrt-packages
     strategy:
       fail-fast: false
       matrix:
@@ -34,14 +34,16 @@ jobs:
 
     - name: 安装编译环境                ## Initialization environment
       run : |
-        pwd && ls  
+        pwd && ls
+        
         git config --global user.email "zuoweiid@users.noreply.github.com"         ## 设置提交电子邮件地址
         git config --global user.name "actions-user"                               ## 名称
         sudo timedatectl set-timezone "Asia/Shanghai"
         
     - name: 克隆软件包                   ## Clone packages
       run: |
-        pwd && ls   
+        pwd && ls
+        
         cd $GITHUB_WORKSPACE              ## 进入工作目录
         chmod +x .github/diy/${{matrix.target}}.sh      ## 给与workflows目录内脚本  可执行的权限
         git clone -b master https://github.com/kenzok8/openwrt-packages.git ${{matrix.target}}     ## 克隆到master目录内
@@ -57,7 +59,8 @@ jobs:
       env: 
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}          ## 项目仓库中添加：ACCESS_TOKEN 令牌值
       run: |
-        pwd && ls  
+        pwd && ls
+        
         if [ -e $GITHUB_WORKSPACE/LICENSE ]; then
           cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}
         fi

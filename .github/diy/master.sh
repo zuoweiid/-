@@ -1,8 +1,10 @@
 #!/bin/bash
 function git_sparse_clone() {
-branch="$1" rurl="$2" localdir="$3" && shift 3
+branch="$1" rurl="$2" localdir="$3" && shift 3          ## 变量
 git clone -b $branch --depth 1 --filter=blob:none --sparse $rurl $localdir
+# git clone -b 1 --depth 1 --filter=blob:none --sparse 2 3
 cd $localdir
+pwd && ls         ## 查看
 git sparse-checkout init --cone
 git sparse-checkout set $@
 mv -n $@ ../
